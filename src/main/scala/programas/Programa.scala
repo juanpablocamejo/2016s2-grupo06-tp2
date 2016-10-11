@@ -1,3 +1,5 @@
 package programas
 
-case class Programa(val sentencias: List[Sentencia])
+class ProgramaBase(var sentencias:List[Sentencia])
+
+case class Programa(_sentencias:Sentencia*) extends ProgramaBase(_sentencias.toList)
