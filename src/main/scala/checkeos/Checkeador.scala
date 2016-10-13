@@ -1,22 +1,23 @@
 package checkeos
 
 import checkeos.problemas.Problema
-import programas.{Programa, Sentencia}
+import programas.{Programa, Sentencia, SentenciaCompuesta, SentenciaSimple}
 
-class Checkeador(var reglas: List[Regla]) {
+case class Checkeador(var reglas: List[Regla]) {
 
   def checkear(programa: Programa): List[Problema] = {
-
-    var problemas: List[Problema] = List()
-
-    reglas.foreach{ r =>
-      programa.sentencias.indices.foreach{ i:Int =>
-        r.checkear(programa, i) match {
-          case Some(a) => problemas = a :: problemas
-          case None =>
-        }
-      }
+    reglas.foldLeft(List[Problema]()) { (z, r) =>
+      checkearSentencia(programa, programa.asInstanceOf[SentenciaCompuesta], r)
     }
-    problemas
   }
+
+  def checkearSentencia(p: Programa, s: Sentencia, r: Regla): List[Problema] = {
+    s match {
+      case s: SentenciaCompuesta =>
+        r.checkear(p, s).toList ++ s.sentencias.foldLeft(List[Problema]()) { (z, s) => z ++ checkearSentencia(p, s, r) }
+      case s: SentenciaSimple => r.checkear(p, s).toList
+    }
+  }
+
+
 }

@@ -1,18 +1,19 @@
 package valores
 
 import ejecucion.Contexto
+import programas.{Sentencia, SentenciaSimple}
 
-abstract class Valor {
+trait Valor extends Sentencia {
   def evaluar[T](contexto: Contexto): T = {
     this match {
       case Referencia(nombre) => contexto.referencias(nombre).evaluar[T](contexto)
-      case a => a.asInstanceOf[T]
+      case a: Valor => a.asInstanceOf[T]
     }
   }
 }
 
-case class Numero(val valor: Int) extends Valor
+case class Numero(valor: Int) extends SentenciaSimple with Valor
 
-case class Booleano(val valor: Boolean) extends Valor
+case class Booleano(valor: Boolean) extends SentenciaSimple with Valor
 
-case class Referencia(val nombre: String) extends Valor
+case class Referencia(nombre: String) extends SentenciaSimple with Valor
