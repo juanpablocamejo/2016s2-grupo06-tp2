@@ -1,4 +1,4 @@
-name := "template-proyecto-scala"
+name := "2016s2-grupo06-tp2"
 
 version := "1.0"
 
