@@ -13,7 +13,6 @@ trait Valor extends Sentencia {
 }
 
 class Literal extends SentenciaSimple with Valor {
-
 }
 
 case class Numero(valor: Int) extends Literal {
@@ -28,4 +27,4 @@ case class Booleano(valor: Boolean) extends Literal {
   }
 }
 
-case class Referencia(val nombre: String) extends SentenciaSimple with Valor
+case class Referencia(nombre: String) extends SentenciaSimple with Valor

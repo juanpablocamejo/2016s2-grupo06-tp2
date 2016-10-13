@@ -1,9 +1,9 @@
 import ejecucion.Contexto
 import operaciones.{Resta, Suma}
 import org.scalatest.{FlatSpec, Matchers}
-import valores.{Numero,Referencia}
+import valores.{Numero, Referencia}
 
-class OperacionesNumericasSpec extends FlatSpec with Matchers {
+class EjecucionSpec extends FlatSpec with Matchers {
   val n4= Numero(4)
   val n3= Numero(3)
 

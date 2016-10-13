@@ -1,6 +1,7 @@
 package checkeos
 
 import checkeos.problemas.Problema
+import checkeos.reglas.Regla
 import programas.{Programa, Sentencia, SentenciaCompuesta, SentenciaSimple}
 
 case class Checkeador(var reglas: List[Regla]) {

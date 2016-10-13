@@ -1,7 +1,7 @@
-import checkeos.problemas.Problema
+import checkeos.Checkeador
+import checkeos.reglas.Regla
 import checkeos.reglas.aritmetica.{ReglaNoMultiplicarPorUno, ReglaNoRestarCero, ReglaNoSumarCero}
 import checkeos.reglas.comparacion.ReglaNoCompararLiterales
-import checkeos.{Checkeador, Regla}
 import operaciones._
 import org.scalatest.{FlatSpec, Matchers}
 import programas.Programa
@@ -17,23 +17,21 @@ class CheckeosSpec extends FlatSpec with Matchers {
   "ReglaNoSumarCero" should " detectar si un operando es 0" in {
     val p = Programa(
       Suma(Numero(0), cualquierNumero),
-      Suma(cualquierNumero, Numero(0))
+      Suma(cualquierNumero, Numero(0)),
+      Suma(Numero(1), Numero(1))
     )
     val problemas = CheckeadorCon(ReglaNoSumarCero()).checkear(p)
     problemas.size should be(2)
   }
 
-  it should "pasar con 1+1 " in {
-    val p = Programa(Suma(Numero(1), Numero(1)))
-    CheckeadorCon(ReglaNoSumarCero()).checkear(p) should be(List[Problema]())
-  }
-  "ReglaNoRestarCero" should " detectar si un operando es 0" in {
+  "ReglaNoRestarCero" should " detectar si el segundo operando es 0" in {
     val p = Programa(
       Resta(Numero(0), cualquierNumero),
-      Resta(cualquierNumero, Numero(0))
+      Resta(cualquierNumero, Numero(0)),
+      Resta(Numero(1), Numero(1))
     )
     val problemas = CheckeadorCon(ReglaNoRestarCero()).checkear(p)
-    problemas.size should be(2)
+    problemas.size should be(1)
   }
   "ReglaNoMultiplicarPorUno" should " detectar si un operando es 1" in {
     val p = Programa(
@@ -43,11 +41,6 @@ class CheckeosSpec extends FlatSpec with Matchers {
     )
     val problemas = CheckeadorCon(ReglaNoMultiplicarPorUno()).checkear(p)
     problemas.size should be(2)
-  }
-
-  it should "pasar con 1-1 " in {
-    val p = Programa(Resta(Numero(1), Numero(1)))
-    CheckeadorCon(ReglaNoRestarCero()).checkear(p) should be(List[Problema]())
   }
 
   "ReglaNoCompararLiterales" should "detectar 1 == 1" in {
