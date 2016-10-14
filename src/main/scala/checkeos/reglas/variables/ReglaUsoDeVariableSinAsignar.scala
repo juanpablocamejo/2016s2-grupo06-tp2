@@ -2,9 +2,9 @@ package checkeos.reglas.variables
 
 import checkeos.problemas.{NivelAdvertencia, Problema}
 import checkeos.reglas.Regla
-import operaciones.Variable
+import operaciones.{Asignar, Variable}
 import programas.{Programa, Sentencia, SentenciaCompuesta}
-import valores.Referencia
+import valores.{Referencia, Valor}
 
 case class ReglaUsoDeVariableSinAsignar() extends Regla("Uso de variable sin asignar", NivelAdvertencia()) {
 

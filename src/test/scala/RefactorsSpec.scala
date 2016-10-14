@@ -1,9 +1,10 @@
 import checkeos.reglas.aritmetica.{ReglaNoRestarCero, ReglaNoSumarCero}
-import operaciones.{Resta, Suma}
+import checkeos.reglas.comparacion.ReglaNoCompararLiterales
+import operaciones.{Igual, Mayor, Resta, Suma}
 import org.scalatest.{FlatSpec, Matchers}
 import programas.Programa
 import refactors.Refactorizador
-import valores.Numero
+import valores.{Booleano, Numero}
 
 class RefactorsSpec extends FlatSpec with Matchers {
 

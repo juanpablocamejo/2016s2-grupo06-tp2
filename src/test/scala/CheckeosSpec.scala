@@ -116,4 +116,15 @@ class CheckeosSpec extends FlatSpec with Matchers {
     val p = Programa(Suma(Numero(4), Numero(0)), s, Asignar(Referencia("b"), Numero(4)))
     CheckeadorCon(ReglaVariableDeclaradaSinUso()).checkear(p).size should be(0)
   }
+
+  "Un checkeador con ReglaNoSumarCero y ReglaNoCompararLiterales" should "detectar ambas cosas" in {
+    val p = Programa(
+      Suma(Numero(0), cualquierNumero),
+      Suma(cualquierNumero, Numero(0)),
+      Suma(Numero(1), Numero(1)),
+      Igual(Numero(1), Numero(1))
+    )
+    val problemas = CheckeadorCon(ReglaNoSumarCero(), ReglaNoCompararLiterales()).checkear(p)
+    problemas.size should be(3)
+  }
 }
