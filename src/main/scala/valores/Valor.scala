@@ -4,27 +4,24 @@ import ejecucion.Contexto
 import programas.{Sentencia, SentenciaSimple}
 
 trait Valor extends Sentencia {
-  def evaluar[T](contexto: Contexto): T = {
+  override def ejecutar(contexto: Contexto): Valor = {
     this match {
-      case Referencia(nombre) => contexto.referencias(nombre).evaluar[T](contexto)
-      case a: Valor => a.asInstanceOf[T]
+      case r@Referencia(nombre) => contexto.obtener(r).ejecutar(contexto)
+      case a: Valor => a
     }
   }
-}
 
-class Literal extends SentenciaSimple with Valor {
-}
-
-case class Numero(valor: Int) extends Literal {
-  def >(x: Numero): Boolean = {
-    this.valor > x.valor
+  def evaluarComo[T](contexto: Contexto): T = {
+    ejecutar(contexto).asInstanceOf[T]
   }
 }
 
-case class Booleano(valor: Boolean) extends Literal {
-  def >(x: Booleano): Boolean = {
-    this.valor > x.valor
-  }
-}
+class Literal extends SentenciaSimple with Valor
+
+case class Numero(valor: Int) extends Literal
+
+case class Booleano(valor: Boolean) extends Literal
 
 case class Referencia(nombre: String) extends SentenciaSimple with Valor
+
+case class Nulo() extends SentenciaSimple with Valor

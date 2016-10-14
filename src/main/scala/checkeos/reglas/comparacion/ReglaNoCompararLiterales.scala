@@ -2,7 +2,6 @@ package checkeos.reglas.comparacion
 
 import checkeos.problemas.{NivelAdvertencia, Problema}
 import checkeos.reglas.Regla
-import ejecucion.Contexto
 import operaciones._
 import programas.{Programa, Sentencia}
 import refactors.Refactor
@@ -26,12 +25,12 @@ case class ReglaNoCompararLiterales() extends Regla("No comparar literales", Niv
 
   def refactor(s: Sentencia): Sentencia = {
     s match {
-      case s@Igual(a: Literal, b: Literal) => s.ejecutar(Contexto())
-      case s@Distinto(a: Literal, b: Literal) => s.ejecutar(Contexto())
-      case s@Mayor(a: Literal, b: Literal) => s.ejecutar(Contexto())
-      case s@Menor(a: Literal, b: Literal) => s.ejecutar(Contexto())
-      case s@MayorOIgual(a: Literal, b: Literal) => s.ejecutar(Contexto())
-      case s@MenorOIgual(a: Literal, b: Literal) => s.ejecutar(Contexto())
+      case s@Igual(a: Literal, b: Literal) => s.ejecutar()
+      case s@Distinto(a: Literal, b: Literal) => s.ejecutar()
+      case s@Mayor(a: Literal, b: Literal) => s.ejecutar()
+      case s@Menor(a: Literal, b: Literal) => s.ejecutar()
+      case s@MayorOIgual(a: Literal, b: Literal) => s.ejecutar()
+      case s@MenorOIgual(a: Literal, b: Literal) => s.ejecutar()
     }
   }
 }

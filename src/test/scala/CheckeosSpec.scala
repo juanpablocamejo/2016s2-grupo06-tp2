@@ -2,10 +2,11 @@ import checkeos.Checkeador
 import checkeos.reglas.Regla
 import checkeos.reglas.aritmetica.{ReglaNoMultiplicarPorUno, ReglaNoRestarCero, ReglaNoSumarCero}
 import checkeos.reglas.comparacion.ReglaNoCompararLiterales
+import checkeos.reglas.variables.{ReglaReferenciaAVariableNoDeclarada, ReglaVariableDeclaradaSinUso, ReglaVariableDuplicada}
 import operaciones._
 import org.scalatest.{FlatSpec, Matchers}
 import programas.Programa
-import valores.Numero
+import valores.{Numero, Referencia}
 
 class CheckeosSpec extends FlatSpec with Matchers {
   val cualquierNumero = Numero(1)
@@ -68,4 +69,51 @@ class CheckeosSpec extends FlatSpec with Matchers {
     CheckeadorCon(ReglaNoCompararLiterales()).checkear(p).size should be(1)
   }
 
+  "ReglaVariableDuplicada" should " detectar una variable duplicada" in {
+    val s = Variable("a")
+    val p = Programa(s, s)
+    val res = CheckeadorCon(ReglaVariableDuplicada()).checkear(p)
+    res.size should be(2)
+    assert(res.head.sentencia == s)
+  }
+
+  "ReglaVariableDuplicada" should " no detectar una variable no duplicada" in {
+    val p = Programa(Variable("a"))
+    CheckeadorCon(ReglaVariableDuplicada()).checkear(p).size should be(0)
+  }
+
+  "ReglaReferenciaAVariableNoDeclarada" should " detectar referencia una variable no declarada" in {
+    val r = Referencia("a")
+    val p = Programa(r, Variable("a"))
+    val res = CheckeadorCon(ReglaReferenciaAVariableNoDeclarada()).checkear(p)
+    res.size should be(1)
+    assert(res.head.sentencia == r)
+  }
+
+  it should "no detectar referencia a una variable declarada" in {
+    val p = Programa(Referencia("a"), Variable("b"), Referencia("b"))
+    CheckeadorCon(ReglaReferenciaAVariableNoDeclarada()).checkear(p).size should be(1)
+  }
+
+  it should "detectar referencia a una variable no declarada dentro de una operacion" in {
+    val s = Referencia("b")
+    val p = Programa(Suma(Referencia("b"), Numero(0)), Variable("b", Numero(2)))
+    val res = CheckeadorCon(ReglaReferenciaAVariableNoDeclarada()).checkear(p)
+    res.size should be(1)
+    assert(res.head.sentencia == s)
+  }
+
+  "ReglaVariableDeclaradaSinUso" should "detectar una variable sin uso" in {
+    val s = Variable("b")
+    val p = Programa(Suma(Numero(4), Numero(0)), s)
+    val res = CheckeadorCon(ReglaVariableDeclaradaSinUso()).checkear(p)
+    res.size should be(1)
+    assert(res.head.sentencia == s)
+  }
+
+  it should "no detectar una variable en uso" in {
+    val s = Variable("b")
+    val p = Programa(Suma(Numero(4), Numero(0)), s, Asignar(Referencia("b"), Numero(4)))
+    CheckeadorCon(ReglaVariableDeclaradaSinUso()).checkear(p).size should be(0)
+  }
 }

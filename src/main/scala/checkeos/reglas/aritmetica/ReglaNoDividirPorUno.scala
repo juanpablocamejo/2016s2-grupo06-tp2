@@ -1,13 +1,13 @@
 package checkeos.reglas.aritmetica
 
-import checkeos.problemas.{NivelError, Problema}
+import checkeos.problemas.{NivelAdvertencia, Problema}
 import checkeos.reglas.Regla
 import operaciones.Division
 import programas.{Programa, Sentencia}
 import refactors.Refactor
 import valores.Numero
 
-case class ReglaNoDividirPorUno() extends Regla("No dividir por 1", NivelError()) with Refactor {
+case class ReglaNoDividirPorUno() extends Regla("No dividir por 1", NivelAdvertencia()) with Refactor {
   val fn: PartialFunction[(Programa, Sentencia), Option[Problema]] = {
     case ps@((_, Division(_, Numero(1)))) => Some(new Problema(this, gravedad, ps._2))
   }

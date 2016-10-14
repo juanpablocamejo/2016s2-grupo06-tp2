@@ -1,9 +1,10 @@
 package ejecucion
 
+import programas.Programa
+import valores.Valor
 
-object Ejecutador {
-  var contexto = Contexto()
-  /*  def ejecutar(p:Programa) ={
-      p.sentencias.foreach(s => s.ejecutar(contexto))
-    }*/
+case class Ejecutador(var contexto: Contexto = Contexto()) {
+  def ejecutar(p: Programa): Valor = {
+    p.ejecutar(contexto)
+  }
 }
