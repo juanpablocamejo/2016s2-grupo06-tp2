@@ -8,7 +8,7 @@ case class Checkeador(var reglas: List[Regla]) {
 
   def checkear(programa: Programa): List[Problema] = {
     reglas.foldLeft(List[Problema]()) { (z, r) =>
-      checkearSentencia(programa, programa.asInstanceOf[SentenciaCompuesta], r)
+      z ++ checkearSentencia(programa, programa.asInstanceOf[SentenciaCompuesta], r)
     }
   }
 
